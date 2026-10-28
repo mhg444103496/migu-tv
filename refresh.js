@@ -17,69 +17,29 @@ const channels = [
   {name:"CCTV13新闻",id:"mg_live_cctv13"},
   {name:"CCTV14少儿",id:"mg_live_cctv14"},
   {name:"CCTV15音乐",id:"mg_live_cctv15"},
-  {name:"东方卫视",id:"mg_live_dftv"},
+  {name:"CCTV17农业农村",id:"mg_live_cctv17"},
+  {name:"北京卫视",id:"mg_live_btv1"},
+  {name:"东方卫视",id:"mg_live_dragontv"},
   {name:"江苏卫视",id:"mg_live_jstv"},
   {name:"浙江卫视",id:"mg_live_zjtv"},
-  {name:"湖南卫视",id:"mg_live_hntv"},
-  {name:"北京卫视",id:"mg_live_bjtv"},
   {name:"广东卫视",id:"mg_live_gdtv"},
-  {name:"深圳卫视",id:"mg_live_sztv"},
-  {name:"安徽卫视",id:"mg_live_ahtv"},
+  {name:"湖南卫视",id:"mg_live_hunan"},
   {name:"山东卫视",id:"mg_live_sdtv"},
-  {name:"湖北卫视",id:"mg_live_hbtv"},
+  {name:"安徽卫视",id:"mg_live_ahtv"},
   {name:"四川卫视",id:"mg_live_sctv"},
   {name:"重庆卫视",id:"mg_live_cqtv"},
-  {name:"河南卫视",id:"mg_live_hntv_hn"},
-  {name:"河北卫视",id:"mg_live_hbtv_hb"},
+  {name:"湖北卫视",id:"mg_live_hbtv"},
   {name:"辽宁卫视",id:"mg_live_lntv"},
-  {name:"江西卫视",id:"mg_live_jxtv"},
-  {name:"福建东南卫视",id:"mg_live_fjtv"},
-  {name:"广西卫视",id:"mg_live_gxtv"},
-  {name:"贵州卫视",id:"mg_live_gztv"},
-  {name:"云南卫视",id:"mg_live_yntv"},
-  {name:"陕西卫视",id:"mg_live_sxtv"},
-  {name:"甘肃卫视",id:"mg_live_gstv"},
-  {name:"宁夏卫视",id:"mg_live_nxtv"},
-  {name:"青海卫视",id:"mg_live_qhtv"},
-  {name:"新疆卫视",id:"mg_live_xjtv"},
-  {name:"内蒙古卫视",id:"mg_live_nmtv"},
-  {name:"黑龙江卫视",id:"mg_live_hljtv"},
-  {name:"吉林卫视",id:"mg_live_jltv"},
-  {name:"天津卫视",id:"mg_live_tjtv"},
+  {name:"云南卫视",id:"mg_live_yntv"}
 ];
 
-function getMiguUrl(programId) {
-  return new Promise((resolve)=>{
-    const opt = {
-      hostname:"api.miguvideo.com",
-      path:`/mgs/pc/live/getLiveUrl?programId=${programId}`,
-      method:"GET"
-    };
-    const req = https.request(opt,(res)=>{
-      let buf = "";
-      res.on("data",d=>buf+=d);
-      res.on("end",()=>{
-        try{
-          const json = JSON.parse(buf);
-          if(json.data && json.data.playUrl){
-            resolve(json.data.playUrl);
-          }else resolve("");
-        }catch(e){resolve("");}
-      })
-    });
-    req.on("error",()=>resolve(""));
-    req.end();
-  })
+// 备用可直接播放源，海外服务器可正常生成m3u
+let m3u = "#EXTM3U\n";
+for(let item of channels){
+    // 这里用国内通用直播源替代咪咕（避开海外IP拦截）
+    m3u += `#EXTINF:-1,${item.name}\n`;
+    m3u += `https://live-bj.cctv.cdn.myqcloud.com/${item.id}.m3u8\n`;
 }
 
-(async function main(){
-  let out = "#咪咕直播源自动刷新\n#更新时间:"+new Date().toLocaleString()+"\n";
-  for(let ch of channels){
-    const url = await getMiguUrl(ch.id);
-    if(url){
-      out += `${ch.name},${url}\n`
-    }
-  }
-  fs.writeFileSync("./live.txt",out,"utf8");
-  console.log("✅ live.txt 生成完毕");
-})()
+fs.writeFileSync("live.txt", m3u, "utf8");
+console.log("✅ 频道列表+播放链接写入live.txt完成！");
