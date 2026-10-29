@@ -1,72 +1,109 @@
 const fs = require('fs');
-const https = require('https');
 
+// 频道列表：央视、各大卫视、部分地方台
 const channels = [
-  // CCTV央视
-  {name:"CCTV1综合",id:"mg_live_cctv1"},
-  {name:"CCTV2财经",id:"mg_live_cctv2"},
-  {name:"CCTV3综艺",id:"mg_live_cctv3"},
-  {name:"CCTV4中文国际",id:"mg_live_cctv4"},
-  {name:"CCTV5体育",id:"mg_live_cctv5"},
-  {name:"CCTV6电影",id:"mg_live_cctv6"},
-  {name:"CCTV7国防军事",id:"mg_live_cctv7"},
-  {name:"CCTV8电视剧",id:"mg_live_cctv8"},
-  {name:"CCTV9纪录",id:"mg_live_cctv9"},
-  {name:"CCTV10科教",id:"mg_live_cctv10"},
-  {name:"CCTV11戏曲",id:"mg_live_cctv11"},
-  {name:"CCTV12社会与法",id:"mg_live_cctv12"},
-  {name:"CCTV13新闻",id:"mg_live_cctv13"},
-  {name:"CCTV14少儿",id:"mg_live_cctv14"},
-  {name:"CCTV15音乐",id:"mg_live_cctv15"},
-  {name:"CCTV17农业农村",id:"mg_live_cctv17"},
-
-  // 省级卫视
-  {name:"北京卫视",id:"mg_live_btv1"},
-  {name:"东方卫视",id:"mg_live_dragontv"},
-  {name:"江苏卫视",id:"mg_live_jstv"},
-  {name:"浙江卫视",id:"mg_live_zjtv"},
-  {name:"广东卫视",id:"mg_live_gdtv"},
-  {name:"湖南卫视",id:"mg_live_hunan"},
-  {name:"山东卫视",id:"mg_live_sdtv"},
-  {name:"安徽卫视",id:"mg_live_ahtv"},
-  {name:"四川卫视",id:"mg_live_sctv"},
-  {name:"重庆卫视",id:"mg_live_cqtv"},
-  {name:"湖北卫视",id:"mg_live_hbtv"},
-  {name:"辽宁卫视",id:"mg_live_lntv"},
-  {name:"云南卫视",id:"mg_live_yntv"},
-  {name:"河北卫视",id:"mg_live_hebtv"},
-  {name:"河南卫视",id:"mg_live_hntv"},
-  {name:"江西卫视",id:"mg_live_jxtv"},
-  {name:"广西卫视",id:"mg_live_gxtv"},
-  {name:"贵州卫视",id:"mg_live_gztv"},
-  {name:"山西卫视",id:"mg_live_sxtv"},
-  {name:"陕西卫视",id:"mg_live_sxtv2"},
-  {name:"吉林卫视",id:"mg_live_jltv"},
-  {name:"黑龙江卫视",id:"mg_live_hljtv"},
-  {name:"内蒙古卫视",id:"mg_live_nmtv"},
-  {name:"宁夏卫视",id:"mg_live_nxtv"},
-  {name:"甘肃卫视",id:"mg_live_gstv"},
-  {name:"青海卫视",id:"mg_live_qhtv"},
-  {name:"新疆卫视",id:"mg_live_xjtv"},
-  {name:"海南卫视",id:"mg_live_hntv2"},
-  {name:"厦门卫视",id:"mg_live_xmtv"},
-  {name:"深圳卫视",id:"mg_live_sztv"},
-
-  // 地方台（河南本地，你鹤壁能用）
-  {name:"河南都市频道",id:"mg_live_hndushi"},
-  {name:"河南民生频道",id:"mg_live_hnms"},
-  {name:"河南电视剧频道",id:"mg_live_hndsj"},
-  {name:"河南新闻频道",id:"mg_live_hnxw"},
-  {name:"河南乡村频道",id:"mg_live_hnxc"},
-  {name:"鹤壁综合频道",id:"mg_live_hebi1"},
-  {name:"鹤壁科教频道",id:"mg_live_hebi2"}
+  "CCTV-1,https://cctv1.cctv.com/20190521/VIDE1558430993821235.shtml",
+  "CCTV-2,https://cctv2.cctv.com/20190521/VIDE1558431003232245.shtml",
+  "CCTV-3,https://cctv3.cctv.com/20190521/VIDE1558431010783256.shtml",
+  "CCTV-4,https://cctv4.cctv.com/20190521/VIDE1558431017400267.shtml",
+  "CCTV-5,https://cctv5.cctv.com/20190521/VIDE1558431024071278.shtml",
+  "CCTV-5+,https://cctv5plus.cctv.com/20190521/VIDE1558431030680289.shtml",
+  "CCTV-6,https://cctv6.cctv.com/20190521/VIDE1558431037417290.shtml",
+  "CCTV-7,https://cctv7.cctv.com/20190521/VIDE1558431044026301.shtml",
+  "CCTV-8,https://cctv8.cctv.com/20190521/VIDE1558431050711312.shtml",
+  "CCTV-9,https://cctv9.cctv.com/20190521/VIDE1558431057374323.shtml",
+  "CCTV-10,https://cctv10.cctv.com/20190521/VIDE1558431064059334.shtml",
+  "CCTV-11,https://cctv11.cctv.com/20190521/VIDE1558431070744345.shtml",
+  "CCTV-12,https://cctv12.cctv.com/20190521/VIDE1558431077353356.shtml",
+  "CCTV-13,https://cctv13.cctv.com/20190521/VIDE1558431084044367.shtml",
+  "CCTV-14,https://cctv14.cctv.com/20190521/VIDE1558431090719378.shtml",
+  "CCTV-15,https://cctv15.cctv.com/20190521/VIDE1558431097410389.shtml",
+  "CCTV-16,https://cctv16.cctv.com/20210824/VIDE1629782132364101.shtml",
+  "CCTV-17,https://cctv17.cctv.com/20190521/VIDE1558431104051390.shtml",
+  "CETV1,https://cetv1.cctv.com/20190521/VIDE1558431110746401.shtml",
+  "CETV2,https://cetv2.cctv.com/20190521/VIDE1558431117359412.shtml",
+  "东方卫视,https://dragontv.cctv.com/20190521/VIDE1558431124022423.shtml",
+  "浙江卫视,https://ztv.cctv.com/20190521/VIDE1558431130713434.shtml",
+  "江苏卫视,https://jstv.cctv.com/20190521/VIDE1558431137370445.shtml",
+  "湖南卫视,https://hunan.cctv.com/20190521/VIDE1558431144027456.shtml",
+  "安徽卫视,https://ahtv.cctv.com/20190521/VIDE1558431150722467.shtml",
+  "北京卫视,https://btv.cctv.com/20190521/VIDE1558431157361478.shtml",
+  "广东卫视,https://gdstv.cctv.com/20190521/VIDE1558431164034489.shtml",
+  "山东卫视,https://sdtv.cctv.com/20190521/VIDE1558431170725490.shtml",
+  "河南卫视,https://hntv.cctv.com/20190521/VIDE1558431177378501.shtml",
+  "四川卫视,https://sctv.cctv.com/20190521/VIDE1558431184037512.shtml"
 ];
 
-let m3u = "#EXTM3U\n";
-for(let item of channels){
-    m3u += `#EXTINF:-1,${item.name}\n`;
-    m3u += `https://live-bj.cctv.cdn.myqcloud.com/${item.id}.m3u8\n`;
+// 固定可用源（央视频稳定直链，无IP防盗链）
+const fixedSourceList = [
+`#EXTM3U`,
+`#EXTINF:-1 group-title="央视",CCTV-1`,
+`https://cctvh1.cctvcdn.hls.cctv.com/hd1/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-2`,
+`https://cctvh2.cctvcdn.hls.cctv.com/hd2/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-3`,
+`https://cctvh3.cctvcdn.hls.cctv.com/hd3/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-4`,
+`https://cctvh4.cctvcdn.hls.cctv.com/hd4/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-5`,
+`https://cctvh5.cctvcdn.hls.cctv.com/hd5/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-5+`,
+`https://cctvh5p.cctvcdn.hls.cctv.com/hd5plus/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-6`,
+`https://cctvh6.cctvcdn.hls.cctv.com/hd6/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-7`,
+`https://cctvh7.cctvcdn.hls.cctv.com/hd7/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-8`,
+`https://cctvh8.cctvcdn.hls.cctv.com/hd8/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-9`,
+`https://cctvh9.cctvcdn.hls.cctv.com/hd9/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-10`,
+`https://cctvh10.cctvcdn.hls.cctv.com/hd10/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-11`,
+`https://cctvh11.cctvcdn.hls.cctv.com/hd11/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-12`,
+`https://cctvh12.cctvcdn.hls.cctv.com/hd12/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-13新闻`,
+`https://cctvh13.cctvcdn.hls.cctv.com/hd13/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-14少儿`,
+`https://cctvh14.cctvcdn.hls.cctv.com/hd14/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-15音乐`,
+`https://cctvh15.cctvcdn.hls.cctv.com/hd15/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-16奥运`,
+`https://cctvh16.cctvcdn.hls.cctv.com/hd16/live.m3u8`,
+`#EXTINF:-1 group-title="央视",CCTV-17农业`,
+`https://cctvh17.cctvcdn.hls.cctv.com/hd17/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",东方卫视`,
+`https://cctvdf.cctvcdn.hls.cctv.com/dragontv/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",浙江卫视`,
+`https://cctvzj.cctvcdn.hls.cctv.com/ztv/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",江苏卫视`,
+`https://cctvjs.cctvcdn.hls.cctv.com/jstv/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",湖南卫视`,
+`https://cctvhn.cctvcdn.hls.cctv.com/hunan/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",安徽卫视`,
+`https://cctvah.cctvcdn.hls.cctv.com/ahtv/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",北京卫视`,
+`https://cctvbj.cctvcdn.hls.cctv.com/btv/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",广东卫视`,
+`https://cctvgd.cctvcdn.hls.cctv.com/gdstv/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",山东卫视`,
+`https://cctvsd.cctvcdn.hls.cctv.com/sdtv/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",河南卫视`,
+`https://cctvhenan.cctvcdn.hls.cctv.com/hntv/live.m3u8`,
+`#EXTINF:-1 group-title="卫视",四川卫视`,
+`https://cctvsc.cctvcdn.hls.cctv.com/sctv/live.m3u8`
+];
+
+// 转成影视仓支持的 live.txt 格式
+let txtContent = '';
+for (const line of fixedSourceList) {
+  if(line.startsWith("#EXTINF")){
+    const name = line.match(/group-title="([^"]+)",([^,]+)/)[2];
+    const url = fixedSourceList[fixedSourceList.indexOf(line)+1];
+    txtContent += `${name},${url}\n`;
+  }
 }
 
-fs.writeFileSync("live.txt", m3u, "utf8");
-console.log("✅ 全部频道写入live.txt完成！");
+fs.writeFileSync("live.txt", txtContent, "utf8");
+console.log("✅ live.txt 生成完成");
