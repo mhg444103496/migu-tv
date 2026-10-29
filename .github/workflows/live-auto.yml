@@ -1,0 +1,38 @@
+name: Update Live & Sync Gitee
+on:
+  push:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run script generate live.txt
+        run: node refresh.js
+
+      - name: Commit new live.txt
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git add live.txt
+          git commit -m "auto update live source" || echo "No changes"
+
+      - name: Sync to Gitee
+        uses: wearerequired/git-mirror-action@master
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.GITEE_SSH_KEY }}
+        with:
+          source-repo:"git@github.com:${{ github.repository }}.git"
+          destination-repo:"git@gitee.com:qoyyq/migu-tv.git"
