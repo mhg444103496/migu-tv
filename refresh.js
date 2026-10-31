@@ -2,10 +2,13 @@ const fs = require('fs');
 
 // 频道列表：央视、各大卫视、部分地方台
 const channels = [
-  "CCTV-1,https://cctv1.cctv.com/20190521/VIDE1558430993821235.shtml",
-  "CCTV-2,https://cctv2.cctv.com/20190521/VIDE1558431003232245.shtml",
-  "CCTV-3,https://cctv3.cctv.com/20190521/VIDE1558431010783256.shtml",
-  "CCTV-4,https://cctv4.cctv.com/20190521/VIDE1558431017400267.shtml",
+  "CCTV-1 综合,http://gslbmgsplive.miguvideo.com/migu/kailu/cctv1hd265/51/20191230/index.m3u8?msisdn=74b293fa9d47c9a8dd2cce905562858a&mdspid=&spid=699004&netType=0&sid=2201057821&pid=2028597139&timestamp=20261031193008&Channel_ID=0116_2600034600-99000-201600010010028&ProgramID=608807420&ParentNodeID=-99&assertID=2201057821&client_ip=180.153.160.8&SecurityKey=20261031193008&promotionId=&mvid=2201057821&mcid=500020&playurlVersion=WX-A1-9.10.1-SNAPSHOT&userid=&jmhm=&videocodec=h265&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&puData=6dd069f982477250b38adab62691c452&ddCalcu=265dv4dac0y16a996f2968b2a4d7a78235b0&sv=10004&ct=android",
+  "CCTV-2 财经,http://gslbmgsplive.miguvideo.com/migu/kailu/cctv2hd265/54/20200407/index.m3u8?msisdn=fe80c31983a87ad84c751030825e21a9&mdspid=&spid=699004&netType=0&sid=5500346945&pid=2028597139&timestamp=20261031193009&Channel_ID=0116_2600034600-99000-201600010010028&ProgramID=631780532&ParentNodeID=-99&assertID=5500346945&client_ip=180.153.160.8&SecurityKey=20261031193009&promotionId=&mvid=5101064231&mcid=500020&playurlVersion=WX-A1-9.10.1-SNAPSHOT&userid=&jmhm=&videocodec=h265&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&puData=3d8a92c8cc1d084aa60ec5cf046deafd&ddCalcu=d3fdva8aeazd9a624c08fccc51cde00864aa&sv=10004&ct=android
+",
+  "CCTV-3 综艺,http://gslbmgsplive.miguvideo.com/wd_r2/2018/ocn/cctv3hd/2000/index.m3u8?msisdn=5b2a04326f69275f37bccdce02fc0be9&mdspid=&spid=699004&netType=0&sid=5500212864&pid=2028597139&timestamp=20261031193009&Channel_ID=0116_2600034600-99000-201600010010028&ProgramID=624878271&ParentNodeID=-99&assertID=5500212864&client_ip=180.153.160.8&SecurityKey=20261031193009&promotionId=&mvid=5100001683&mcid=500020&playurlVersion=WX-A1-9.10.1-SNAPSHOT&userid=&jmhm=&videocodec=h264&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&puData=30012f2112314945fd071b5c11a506e3&ddCalcu=33e0v60a01a52aaf1211c152b3117409d4f5&sv=10004&ct=android
+",
+  "CCTV-4 中文国际,http://gslbmgsplive.miguvideo.com/migu/kailu/cctv4hd265/51/20191230/index.m3u8?msisdn=129e58d374724f9924e91c571657716f&mdspid=&spid=699004&netType=0&sid=5500346947&pid=2028597139&timestamp=20261031193010&Channel_ID=0116_2600034600-99000-201600010010028&ProgramID=631780421&ParentNodeID=-99&assertID=5500346947&client_ip=180.153.160.8&SecurityKey=20261031193010&promotionId=&mvid=5101064235&mcid=500020&playurlVersion=WX-A1-9.10.1-SNAPSHOT&userid=&jmhm=&videocodec=h265&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&puData=acc70565818eaf8cdba0c3774eaa9597&ddCalcu=7a9cv5ca97ya0aa5e645787138ce0aafb8dc&sv=10004&ct=android
+",
   "CCTV-5,https://cctv5.cctv.com/20190521/VIDE1558431024071278.shtml",
   "CCTV-5+,https://cctv5plus.cctv.com/20190521/VIDE1558431030680289.shtml",
   "CCTV-6,https://cctv6.cctv.com/20190521/VIDE1558431037417290.shtml",
