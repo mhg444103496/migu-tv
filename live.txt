@@ -6,7 +6,8 @@ https://live-bj.cctv.cdn.myqcloud.com/mg_live_cctv2.m3u8
 #EXTINF:-1,CCTV3综艺
 https://live-bj.cctv.cdn.myqcloud.com/mg_live_cctv3.m3u8
 #EXTINF:-1,CCTV4中文国际
-https://live-bj.cctv.cdn.myqcloud.com/mg_live_cctv4.m3u8
+http://gslbmgsplive.miguvideo.com/migu/kailu/cctv4hd265/51/20191230/index.m3u8?msisdn=129e58d374724f9924e91c571657716f&mdspid=&spid=699004&netType=0&sid=5500346947&pid=2028597139&timestamp=20261031193010&Channel_ID=0116_2600034600-99000-201600010010028&ProgramID=631780421&ParentNodeID=-99&assertID=5500346947&client_ip=180.153.160.8&SecurityKey=20261031193010&promotionId=&mvid=5101064235&mcid=500020&playurlVersion=WX-A1-9.10.1-SNAPSHOT&userid=&jmhm=&videocodec=h265&appCode=miguvideo_android&bean=mgspad&tid=android&conFee=0&puData=acc70565818eaf8cdba0c3774eaa9597&ddCalcu=7a9cv5ca97ya0aa5e645787138ce0aafb8dc&sv=10004&ct=android
+
 #EXTINF:-1,CCTV5体育
 https://live-bj.cctv.cdn.myqcloud.com/mg_live_cctv5.m3u8
 #EXTINF:-1,CCTV6电影
